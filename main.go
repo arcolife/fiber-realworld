@@ -1,13 +1,16 @@
+//go:generate swag init
+//You must first install   https://github.com/arsmn/fiber-swagger
 package main
 
 import (
 	"fmt"
+
 	"github.com/alpody/fiber-realworld/db"
 	_ "github.com/alpody/fiber-realworld/docs"
 	"github.com/alpody/fiber-realworld/handler"
 	"github.com/alpody/fiber-realworld/router"
 	"github.com/alpody/fiber-realworld/store"
-	"github.com/arsmn/fiber-swagger/v2"
+	swagger "github.com/arsmn/fiber-swagger/v2"
 )
 
 // @description Conduit API
