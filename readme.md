@@ -15,7 +15,7 @@ For more information on how to this works with other frontends/backends, head ov
 
 ## Quick start
 
-Before quick start you must install [Docker](https://www.docker.com) and [Git](https://git-scm.com/)
+Before quick start you must install [Docker](https://www.docker.com) and [Git](https://git-scm.com/).
 
 
 ```bash
@@ -26,6 +26,9 @@ chmod a+x start.sh
 ```
 Press Ctrl + c for stop application.
 
+See asciinema this process:
+
+[![asciicast](https://asciinema.org/a/T7jXTBBEQAdAdpfKQxwzjcsau.svg)](https://asciinema.org/a/T7jXTBBEQAdAdpfKQxwzjcsau)
 
 ## Getting started
 
@@ -100,4 +103,10 @@ make help
 ```bash
 ➜ go test ./...
 ```
+### Swagger UI
+
+Open url http://localhost:8585/swagger/index.html in browser.
+
+![2021-10-07_17-01-27](https://user-images.githubusercontent.com/13846803/136400503-fedd869c-4508-4699-a79b-66e0bbd765e2.png)
+
 
