@@ -29,6 +29,9 @@ help: ## Prints help for targets with comments
 download: ## Download go dependency 
 	go mod download
 
+clear-db: ## Remove old database
+rm -f ./database/realworld.db
+
 generate: ## Generate swagger docs. Required https://github.com/arsmn/fiber-swagger 
 	go generate .	
 
