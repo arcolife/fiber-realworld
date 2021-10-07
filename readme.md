@@ -13,6 +13,17 @@ We've gone to great lengths to adhere to the [Golang/Fiber](https://gofiber.io) 
 For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
 
 
+## Quick start
+
+Before quick start you must install [Docker](https://www.docker.com) and [Git](https://git-scm.com/)
+
+```bash
+git clone https://github.com/alpody/golang-fiber-realworld-example-app.git
+cd golang-fiber-realworld-example-app 
+chmod a+x start.sh
+./start.sh
+```
+
 ## Getting started
 
 ### Install Golang (go1.11+)
@@ -53,6 +64,14 @@ Switch to the repo folder
 
 ```bash
 ➜ cd $GOPATH/src/github.com/alpody/golang-fiber-realworld-example-app
+```
+
+### Working with makefile
+
+If you had installed make utility, you can simply run and select command. 
+
+```bash
+make help
 ```
 
 ### Install dependencies
