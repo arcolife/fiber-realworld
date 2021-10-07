@@ -17,7 +17,11 @@ func NewArticleStore(db *gorm.DB) *ArticleStore {
 
 func (as *ArticleStore) GetBySlug(s string) (*model.Article, error) {
 	var m model.Article
-	err := as.db.Where(&model.Article{Slug: s}).Preload("Favorites").Preload("Tags").Preload("Author").Find(&m).Error
+	err := as.db.Where(&model.Article{Slug: s}).Preload("Favorites").
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tag asc")
+		}).
+		Preload("Author").Find(&m).Error
 	if err != nil {
 		if gorm.IsRecordNotFoundError(err) {
 			return nil, nil
@@ -107,7 +111,9 @@ func (as *ArticleStore) List(offset, limit int) ([]model.Article, int, error) {
 	)
 	as.db.Model(&articles).Count(&count)
 	as.db.Preload("Favorites").
-		Preload("Tags").
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tag asc")
+		}).
 		Preload("Author").
 		Offset(offset).
 		Limit(limit).
@@ -126,7 +132,9 @@ func (as *ArticleStore) ListByTag(tag string, offset, limit int) ([]model.Articl
 	}
 	as.db.Model(&t).
 		Preload("Favorites").
-		Preload("Tags").
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tag asc")
+		}).
 		Preload("Author").
 		Offset(offset).
 		Limit(limit).
@@ -148,7 +156,9 @@ func (as *ArticleStore) ListByAuthor(username string, offset, limit int) ([]mode
 	}
 	as.db.Where(&model.Article{AuthorID: u.ID}).
 		Preload("Favorites").
-		Preload("Tags").
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tag asc")
+		}).
 		Preload("Author").
 		Offset(offset).
 		Limit(limit).
@@ -169,7 +179,9 @@ func (as *ArticleStore) ListByWhoFavorited(username string, offset, limit int) (
 	}
 	as.db.Model(&u).
 		Preload("Favorites").
-		Preload("Tags").
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tag asc")
+		}).
 		Preload("Author").
 		Offset(offset).
 		Limit(limit).
@@ -202,7 +214,9 @@ func (as *ArticleStore) ListFeed(userID uint, offset, limit int) ([]model.Articl
 	}
 	as.db.Where("author_id in (?)", ids).
 		Preload("Favorites").
-		Preload("Tags").
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tag asc")
+		}).
 		Preload("Author").
 		Offset(offset).
 		Limit(limit).

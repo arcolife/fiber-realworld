@@ -2,14 +2,15 @@ package db
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/alpody/fiber-realworld/model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"os"
 )
 
 func New() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "./realworld.db")
+	db, err := gorm.Open("sqlite3", "./database/realworld.db")
 	if err != nil {
 		fmt.Println("storage err: ", err)
 	}
@@ -19,7 +20,7 @@ func New() *gorm.DB {
 }
 
 func TestDB() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "./../realworld_test.db")
+	db, err := gorm.Open("sqlite3", "./../database/realworld_test.db")
 	if err != nil {
 		fmt.Println("storage err: ", err)
 	}
@@ -29,7 +30,7 @@ func TestDB() *gorm.DB {
 }
 
 func DropTestDB() error {
-	if err := os.Remove("./../realworld_test.db"); err != nil {
+	if err := os.Remove("./../database/realworld_test.db"); err != nil {
 		return err
 	}
 	return nil
