@@ -17,12 +17,15 @@ For more information on how to this works with other frontends/backends, head ov
 
 Before quick start you must install [Docker](https://www.docker.com) and [Git](https://git-scm.com/)
 
+
 ```bash
 git clone https://github.com/alpody/golang-fiber-realworld-example-app.git
 cd golang-fiber-realworld-example-app 
 chmod a+x start.sh
 ./start.sh
 ```
+Press Ctrl + c for stop application.
+
 
 ## Getting started
 
