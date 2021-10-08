@@ -3,4 +3,4 @@ language: go
 
 go:
   - 1.17.x
-script: make generate && make build
+script: go mod download && make generate && make build
