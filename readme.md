@@ -15,7 +15,7 @@ For more information on how to this works with other frontends/backends, head ov
 
 ## Quick start
 
-Before quick start you must install [Docker](https://www.docker.com) and [Git](https://git-scm.com/).
+Before quick start you must install [docker](https://www.docker.com), [docker-compose](https://docs.docker.com/compose/)  and [Git](https://git-scm.com/).
 
 
 ```bash
@@ -24,11 +24,11 @@ cd golang-fiber-realworld-example-app
 chmod a+x start.sh
 ./start.sh
 ```
-Press Ctrl + c for stop application.
+Press <code>Ctrl + c</code> for stop application.
 
 See asciinema this process:
 
-[![asciicast](https://asciinema.org/a/T7jXTBBEQAdAdpfKQxwzjcsau.svg)](https://asciinema.org/a/T7jXTBBEQAdAdpfKQxwzjcsau)
+[![asciicast](https://asciinema.org/a/eyZ5upSyv9IJyE36g4sj3ZBBw.svg)](https://asciinema.org/a/eyZ5upSyv9IJyE36g4sj3ZBBw)
 
 ## Getting started
 
