@@ -7,18 +7,13 @@ require (
 	github.com/arsmn/fiber-swagger/v2 v2.3.0
 	github.com/form3tech-oss/jwt-go v3.2.2+incompatible
 	github.com/go-playground/validator/v10 v10.4.1
-	github.com/gofiber/fiber/v2 v2.5.0
+	github.com/gofiber/fiber/v2 v2.21.0
 	github.com/gofiber/jwt/v2 v2.1.0
 	github.com/gosimple/slug v1.9.0
 	github.com/jinzhu/gorm v1.9.16
-	github.com/kyoh86/richgo v0.3.9 // indirect
-	github.com/kyoh86/xdg v1.2.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/stretchr/testify v1.6.1
 	github.com/swaggo/swag v1.7.0
-	github.com/wacul/ptr v1.0.0 // indirect
-	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
+	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
 	golang.org/x/sys v0.0.0-20211001092434-39dca1131b70 // indirect
 )
