@@ -2,7 +2,7 @@ package store
 
 import (
 	"github.com/alpody/fiber-realworld/model"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type ArticleStore struct {

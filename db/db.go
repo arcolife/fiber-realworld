@@ -5,16 +5,24 @@ import (
 	"os"
 
 	"github.com/alpody/fiber-realworld/model"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/driver/postgres"
+	_ "gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func New() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "./database/realworld.db")
+	dsn := "host=/tmp user=realworld dbname=realworld"
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN: dsn,
+		//PreferSimpleProtocol: true, // disables implicit prepared statement usage
+	}), &gorm.Config{})
+
+	//db, err := gorm.Open("postgresql", "postgresql://realworld@/realworld?host=/tmp")
+	//db, err := gorm.Open("sqlite3", "./database/realworld.db")
 	if err != nil {
 		fmt.Println("storage err: ", err)
 	}
-	db.DB().SetMaxIdleConns(3)
+	//db.DB().SetMaxIdleConns(3)
 	db.LogMode(true)
 	return db
 }
