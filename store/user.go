@@ -69,23 +69,40 @@ func (us *UserStore) AddFollower(u *model.User, followerID uint) error {
 
 func (us *UserStore) RemoveFollower(u *model.User, followerID uint) error {
 	//log.Fatal("STOP")
-	f := model.Follow{
-		FollowerID:  followerID,
-		FollowingID: u.ID,
-	}
-	if err := us.db.Model(u).Association("Followers").Find(&f); err != nil {
-		return err
-	}
-	if err := us.db.Delete(f).Error; err != nil {
-		return err
+	if "sqlite" == us.db.Config.Dialector.Name() {
+
+		err := us.db.Exec("delete from `follows` where `follower_id`=? and `following_id`=?",
+			followerID,
+			u.ID).Error
+
+		//newUser := model.User{}
+		//us.db.Model(u).Where(u.ID).First(&newUser)
+		//u = &newUser
+		//log.Fatal(u.Followers)
+		if err != nil {
+			return err
+		}
+		return nil
+	} else {
+		f := model.Follow{
+			FollowerID:  followerID,
+			FollowingID: u.ID,
+		}
+		if err := us.db.Model(u).Association("Followers").Find(&f); err != nil {
+			return err
+		}
+		if err := us.db.Delete(f).Error; err != nil {
+			return err
+		}
+
+		return nil
 	}
 
-	return nil
 }
 
 func (us *UserStore) IsFollower(userID, followerID uint) (bool, error) {
 	var f model.Follow
-	if err := us.db.Where("following_id = ? AND follower_id = ?", userID, followerID).Find(&f).Error; err != nil {
+	if err := us.db.Where("following_id = ? AND follower_id = ?", userID, followerID).First(&f).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return false, nil
 		}

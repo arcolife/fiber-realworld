@@ -58,18 +58,18 @@ func New() *gorm.DB {
 
 func TestDB() *gorm.DB {
 	dsn := "./../database/realworld_test.db"
-	newLogger := logger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
-		logger.Config{
-			SlowThreshold:             time.Millisecond * 10, // Slow SQL threshold
-			LogLevel:                  logger.Info,           // Log level
-			IgnoreRecordNotFoundError: false,                 // Ignore ErrRecordNotFound error for logger
-			Colorful:                  true,                  // Disable color
-		},
-	)
+	//newLogger := logger.New(
+	//log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+	//logger.Config{
+	//SlowThreshold:             time.Millisecond * 10, // Slow SQL threshold
+	//LogLevel:                  logger.Info,           // Log level
+	//IgnoreRecordNotFoundError: false,                 // Ignore ErrRecordNotFound error for logger
+	//Colorful:                  true,                  // Disable color
+	//},
+	//)
 
 	db, err := gorm.Open(sqlite.Open(dsn), &gorm.Config{
-		Logger: newLogger,
+		//Logger: newLogger,
 	})
 	if err != nil {
 		fmt.Println("storage err: ", err)

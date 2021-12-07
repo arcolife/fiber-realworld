@@ -93,7 +93,7 @@ func (as *ArticleStore) UpdateArticle(a *model.Article, tagList []string) error 
 		tx.Rollback()
 		return err
 	}
-	if err := tx.Where(a.ID).Preload("Favorites").Preload("Tags").Preload("Author").Find(a).Error; err != nil {
+	if err := tx.Where(a.ID).Preload("Favorites").Preload("Tags").Preload("Author").First(a).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -278,8 +278,9 @@ func (as *ArticleStore) RemoveFavorite(a *model.Article, userID uint) error {
 
 func (as *ArticleStore) ListTags() ([]model.Tag, error) {
 	var tags []model.Tag
-	if err := as.db.Find(&tags).Error; err != nil {
-		return nil, err
+	as.db.Find(&tags)
+	if len(tags) == 0 {
+		return nil, errors.New("tags not found")
 	}
 	return tags, nil
 }
