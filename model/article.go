@@ -29,6 +29,6 @@ type Comment struct {
 
 type Tag struct {
 	gorm.Model
-	Tag      string    `gorm: "uniqueIndex"`
+	Tag      string    `gorm:"uniqueIndex"`
 	Articles []Article `gorm:"many2many:article_tags;"`
 }

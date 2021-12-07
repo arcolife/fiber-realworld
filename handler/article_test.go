@@ -2,15 +2,17 @@ package handler
 
 import (
 	//"fmt"
+
 	"github.com/alpody/fiber-realworld/utils"
 	//"github.com/gofiber/fiber/v2"
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestListArticlesCaseSuccess(t *testing.T) {
@@ -30,7 +32,8 @@ func TestListArticlesCaseSuccess(t *testing.T) {
 		var aa articleListResponse
 		err := json.Unmarshal(body, &aa)
 		assert.NoError(t, err)
-		assert.Equal(t, 2, aa.ArticlesCount)
+
+		assert.Equal(t, int64(2), aa.ArticlesCount)
 	}
 
 }
@@ -125,7 +128,7 @@ func TestFeedCaseSuccess(t *testing.T) {
 		err := json.Unmarshal(body, &a)
 		assert.NoError(t, err)
 		assert.Equal(t, 1, len(a.Articles))
-		assert.Equal(t, a.ArticlesCount, len(a.Articles))
+		assert.Equal(t, a.ArticlesCount, int64(len(a.Articles)))
 		assert.Equal(t, "article2 title", a.Articles[0].Title)
 	}
 

@@ -252,7 +252,7 @@ func (as *ArticleStore) GetCommentsBySlug(slug string) ([]model.Comment, error) 
 func (as *ArticleStore) GetCommentByID(id uint) (*model.Comment, error) {
 	var m model.Comment
 	if err := as.db.Where(id).First(&m).Error; err != nil {
-		if !errors.Is(err, gorm.ErrRecordNotFound) {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
 		return nil, err

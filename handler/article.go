@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -303,6 +304,8 @@ func (h *Handler) DeleteComment(c *fiber.Ctx) error {
 	}
 	cm, err := h.articleStore.GetCommentByID(id)
 	if err != nil {
+		log.Println("[FATAL]")
+		log.Fatal(err)
 		return c.Status(http.StatusInternalServerError).JSON(utils.NewError(err))
 	}
 	if cm == nil {
