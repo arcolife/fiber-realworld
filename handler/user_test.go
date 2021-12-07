@@ -2,14 +2,15 @@ package handler
 
 import (
 	//"fmt"
-	"github.com/alpody/fiber-realworld/utils"
-	_ "github.com/gofiber/fiber/v2"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/alpody/fiber-realworld/utils"
+	_ "github.com/gofiber/fiber/v2"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSignUpCaseSuccess(t *testing.T) {

@@ -2,6 +2,10 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
+	"os"
+	"testing"
+
 	"github.com/alpody/fiber-realworld/article"
 	"github.com/alpody/fiber-realworld/db"
 	"github.com/alpody/fiber-realworld/model"
@@ -9,12 +13,9 @@ import (
 	"github.com/alpody/fiber-realworld/store"
 	"github.com/alpody/fiber-realworld/user"
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/driver/postgres"
+	_ "gorm.io/driver/postgres"
 	_ "gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"log"
-	"os"
-	"testing"
 )
 
 var (
@@ -46,7 +47,6 @@ func setup() {
 	loadFixtures()
 }
 func tearDown() {
-	_ = d.Close()
 	if err := db.DropTestDB(); err != nil {
 		log.Fatal(err)
 	}

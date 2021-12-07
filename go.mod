@@ -7,15 +7,16 @@ require (
 	github.com/arsmn/fiber-swagger/v2 v2.20.0
 	github.com/form3tech-oss/jwt-go v3.2.5+incompatible
 	github.com/go-playground/validator/v10 v10.9.0
-	github.com/gofiber/fiber/v2 v2.21.0
-	github.com/gofiber/jwt/v2 v2.2.7
+	github.com/gofiber/fiber/v2 v2.22.0
+	github.com/gofiber/jwt/v3 v3.2.1
+	github.com/golang-jwt/jwt/v4 v4.1.0
 	github.com/gosimple/slug v1.11.2
 	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/swag v1.7.4
 	golang.org/x/crypto v0.0.0-20211108221036-ceb1ce70b4fa
 	gorm.io/driver/postgres v1.2.2
 	gorm.io/driver/sqlite v1.2.4
-	gorm.io/gorm v1.22.3
+	gorm.io/gorm v1.22.4
 )
 
 require (
@@ -30,7 +31,6 @@ require (
 	github.com/go-openapi/swag v0.19.14 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/golang-jwt/jwt/v4 v4.0.0 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.10.0 // indirect
@@ -41,7 +41,7 @@ require (
 	github.com/jackc/pgtype v1.8.1 // indirect
 	github.com/jackc/pgx/v4 v4.13.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
-	github.com/jinzhu/now v1.1.2 // indirect
+	github.com/jinzhu/now v1.1.3 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/klauspost/compress v1.13.4 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect

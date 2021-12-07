@@ -2,10 +2,11 @@ package handler
 
 import (
 	"errors"
-	"github.com/alpody/fiber-realworld/model"
-	"github.com/alpody/fiber-realworld/utils"
 	"net/http"
 	"strconv"
+
+	"github.com/alpody/fiber-realworld/model"
+	"github.com/alpody/fiber-realworld/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -51,7 +52,7 @@ func (h *Handler) GetArticle(c *fiber.Ctx) error {
 func (h *Handler) Articles(c *fiber.Ctx) error {
 	var (
 		articles []model.Article
-		count    int
+		count    int64
 	)
 	tag := c.Params("tag")
 	author := c.Params("author")
@@ -106,7 +107,7 @@ func (h *Handler) Articles(c *fiber.Ctx) error {
 func (h *Handler) Feed(c *fiber.Ctx) error {
 	var (
 		articles []model.Article
-		count    int
+		count    int64
 	)
 	offset, err := strconv.Atoi(c.Params("offset"))
 	if err != nil {

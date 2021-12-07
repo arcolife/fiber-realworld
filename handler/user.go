@@ -2,11 +2,12 @@ package handler
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/alpody/fiber-realworld/model"
 	"github.com/alpody/fiber-realworld/utils"
-	jwtware "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
-	"net/http"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 // SignUp godoc
@@ -224,12 +225,12 @@ func (h *Handler) Unfollow(c *fiber.Ctx) error {
 }
 
 func userIDFromToken(c *fiber.Ctx) uint {
-	var user *jwtware.Token
+	var user *jwt.Token
 	l := c.Locals("user")
 	if l == nil {
 		return 0
 	}
-	user = l.(*jwtware.Token)
-	id := uint(((user.Claims.(jwtware.MapClaims)["id"]).(float64)))
+	user = l.(*jwt.Token)
+	id := uint(((user.Claims.(jwt.MapClaims)["id"]).(float64)))
 	return id
 }

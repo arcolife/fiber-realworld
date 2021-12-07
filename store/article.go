@@ -1,6 +1,8 @@
 package store
 
 import (
+	"errors"
+
 	"github.com/alpody/fiber-realworld/model"
 	"gorm.io/gorm"
 )
@@ -21,9 +23,9 @@ func (as *ArticleStore) GetBySlug(s string) (*model.Article, error) {
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tag asc")
 		}).
-		Preload("Author").Find(&m).Error
+		Preload("Author").First(&m).Error
 	if err != nil {
-		if gorm.IsRecordNotFoundError(err) {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
 		return nil, err
@@ -33,9 +35,9 @@ func (as *ArticleStore) GetBySlug(s string) (*model.Article, error) {
 
 func (as *ArticleStore) GetUserArticleBySlug(userID uint, slug string) (*model.Article, error) {
 	var m model.Article
-	err := as.db.Where(&model.Article{Slug: slug, AuthorID: userID}).Find(&m).Error
+	err := as.db.Where(&model.Article{Slug: slug, AuthorID: userID}).First(&m).Error
 	if err != nil {
-		if gorm.IsRecordNotFoundError(err) {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
 		return nil, err
@@ -53,17 +55,16 @@ func (as *ArticleStore) CreateArticle(a *model.Article) error {
 	}
 	for _, t := range a.Tags {
 		err := tx.Where(&model.Tag{Tag: t.Tag}).First(&t).Error
-		if err != nil && !gorm.IsRecordNotFoundError(err) {
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			tx.Rollback()
 			return err
 		}
-
-		if err := tx.Model(&a).Association("Tags").Append(t).Error; err != nil {
+		if err := tx.Model(&a).Association("Tags").Append(&t); err != nil {
 			tx.Rollback()
 			return err
 		}
 	}
-	if err := tx.Where(a.ID).Preload("Favorites").Preload("Tags").Preload("Author").Find(&a).Error; err != nil {
+	if err := tx.Where(a.ID).Preload("Favorites").Preload("Tags").Preload("Author").First(&a).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -73,7 +74,7 @@ func (as *ArticleStore) CreateArticle(a *model.Article) error {
 
 func (as *ArticleStore) UpdateArticle(a *model.Article, tagList []string) error {
 	tx := as.db.Begin()
-	if err := tx.Model(a).Update(a).Error; err != nil {
+	if err := tx.Model(a).Updates(a).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -82,13 +83,13 @@ func (as *ArticleStore) UpdateArticle(a *model.Article, tagList []string) error 
 		tag := model.Tag{Tag: t}
 
 		err := tx.Where(&tag).First(&tag).Error
-		if err != nil && !gorm.IsRecordNotFoundError(err) {
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			tx.Rollback()
 			return err
 		}
 		tags = append(tags, tag)
 	}
-	if err := tx.Model(a).Association("Tags").Replace(tags).Error; err != nil {
+	if err := tx.Model(a).Association("Tags").Replace(tags); err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -104,10 +105,10 @@ func (as *ArticleStore) DeleteArticle(a *model.Article) error {
 	return as.db.Delete(a).Error
 }
 
-func (as *ArticleStore) List(offset, limit int) ([]model.Article, int, error) {
+func (as *ArticleStore) List(offset, limit int) ([]model.Article, int64, error) {
 	var (
 		articles []model.Article
-		count    int
+		count    int64
 	)
 	as.db.Model(&articles).Count(&count)
 	as.db.Preload("Favorites").
@@ -120,11 +121,11 @@ func (as *ArticleStore) List(offset, limit int) ([]model.Article, int, error) {
 		Order("created_at desc").Find(&articles)
 	return articles, count, nil
 }
-func (as *ArticleStore) ListByTag(tag string, offset, limit int) ([]model.Article, int, error) {
+func (as *ArticleStore) ListByTag(tag string, offset, limit int) ([]model.Article, int64, error) {
 	var (
 		t        model.Tag
 		articles []model.Article
-		count    int
+		count    int64
 	)
 	err := as.db.Where(&model.Tag{Tag: tag}).First(&t).Error
 	if err != nil {
@@ -144,11 +145,11 @@ func (as *ArticleStore) ListByTag(tag string, offset, limit int) ([]model.Articl
 	count = as.db.Model(&t).Association("Articles").Count()
 	return articles, count, nil
 }
-func (as *ArticleStore) ListByAuthor(username string, offset, limit int) ([]model.Article, int, error) {
+func (as *ArticleStore) ListByAuthor(username string, offset, limit int) ([]model.Article, int64, error) {
 	var (
 		u        model.User
 		articles []model.Article
-		count    int
+		count    int64
 	)
 	err := as.db.Where(&model.User{Username: username}).First(&u).Error
 	if err != nil {
@@ -167,11 +168,11 @@ func (as *ArticleStore) ListByAuthor(username string, offset, limit int) ([]mode
 	as.db.Where(&model.Article{AuthorID: u.ID}).Model(&model.Article{}).Count(&count)
 	return articles, count, nil
 }
-func (as *ArticleStore) ListByWhoFavorited(username string, offset, limit int) ([]model.Article, int, error) {
+func (as *ArticleStore) ListByWhoFavorited(username string, offset, limit int) ([]model.Article, int64, error) {
 	var (
 		u        model.User
 		articles []model.Article
-		count    int
+		count    int64
 	)
 	err := as.db.Where(&model.User{Username: username}).First(&u).Error
 	if err != nil {
@@ -192,11 +193,11 @@ func (as *ArticleStore) ListByWhoFavorited(username string, offset, limit int) (
 	return articles, count, nil
 }
 
-func (as *ArticleStore) ListFeed(userID uint, offset, limit int) ([]model.Article, int, error) {
+func (as *ArticleStore) ListFeed(userID uint, offset, limit int) ([]model.Article, int64, error) {
 	var (
 		u        model.User
 		articles []model.Article
-		count    int
+		count    int64
 	)
 	err := as.db.First(&u, userID).Error
 	if err != nil {
@@ -228,7 +229,7 @@ func (as *ArticleStore) ListFeed(userID uint, offset, limit int) ([]model.Articl
 }
 
 func (as *ArticleStore) AddComment(a *model.Article, c *model.Comment) error {
-	err := as.db.Model(a).Association("Comments").Append(c).Error
+	err := as.db.Model(a).Association("Comments").Append(c)
 	if err != nil {
 		return err
 	}
@@ -240,7 +241,7 @@ func (as *ArticleStore) GetCommentsBySlug(slug string) ([]model.Comment, error) 
 	var m model.Article
 	err := as.db.Where(&model.Article{Slug: slug}).Preload("Comments").Preload("Comments.User").First(&m).Error
 	if err != nil {
-		if gorm.IsRecordNotFoundError(err) {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
 		return nil, err
@@ -251,7 +252,7 @@ func (as *ArticleStore) GetCommentsBySlug(slug string) ([]model.Comment, error) 
 func (as *ArticleStore) GetCommentByID(id uint) (*model.Comment, error) {
 	var m model.Comment
 	if err := as.db.Where(id).First(&m).Error; err != nil {
-		if gorm.IsRecordNotFoundError(err) {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
 		return nil, err
@@ -266,13 +267,13 @@ func (as *ArticleStore) DeleteComment(c *model.Comment) error {
 func (as *ArticleStore) AddFavorite(a *model.Article, userID uint) error {
 	usr := model.User{}
 	usr.ID = userID
-	return as.db.Model(a).Association("Favorites").Append(&usr).Error
+	return as.db.Model(a).Association("Favorites").Append(&usr)
 }
 
 func (as *ArticleStore) RemoveFavorite(a *model.Article, userID uint) error {
 	usr := model.User{}
 	usr.ID = userID
-	return as.db.Model(a).Association("Favorites").Delete(&usr).Error
+	return as.db.Model(a).Association("Favorites").Delete(&usr)
 }
 
 func (as *ArticleStore) ListTags() ([]model.Tag, error) {

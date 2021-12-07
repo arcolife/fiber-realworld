@@ -7,7 +7,7 @@ import (
 
 type Article struct {
 	gorm.Model
-	Slug        string `gorm:"unique_index;not null"`
+	Slug        string `gorm:"uniqueIndex;not null"`
 	Title       string `gorm:"not null"`
 	Description string
 	Body        string
@@ -15,7 +15,7 @@ type Article struct {
 	AuthorID    uint
 	Comments    []Comment
 	Favorites   []User `gorm:"many2many:favorites;"`
-	Tags        []Tag  `gorm:"many2many:article_tags; association_autocreate:false"`
+	Tags        []Tag  `gorm:"many2many:article_tags;"`
 }
 
 type Comment struct {
@@ -29,6 +29,6 @@ type Comment struct {
 
 type Tag struct {
 	gorm.Model
-	Tag      string    `gorm: "unique_index"`
+	Tag      string    `gorm: "uniqueIndex"`
 	Articles []Article `gorm:"many2many:article_tags;"`
 }

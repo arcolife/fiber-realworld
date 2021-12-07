@@ -1,11 +1,12 @@
 package handler
 
 import (
+	"time"
+
 	"github.com/alpody/fiber-realworld/model"
 	"github.com/alpody/fiber-realworld/user"
 	"github.com/alpody/fiber-realworld/utils"
 	_ "github.com/gofiber/fiber/v2"
-	"time"
 )
 
 type userResponse struct {
@@ -70,7 +71,7 @@ type singleArticleResponse struct {
 
 type articleListResponse struct {
 	Articles      []*articleResponse `json:"articles"`
-	ArticlesCount int                `json:"articlesCount"`
+	ArticlesCount int64              `json:"articlesCount"`
 }
 
 func newArticleResponse(userID uint, a *model.Article) *singleArticleResponse {
@@ -98,7 +99,7 @@ func newArticleResponse(userID uint, a *model.Article) *singleArticleResponse {
 	return &singleArticleResponse{ar}
 }
 
-func newArticleListResponse(us user.Store, userID uint, articles []model.Article, count int) *articleListResponse {
+func newArticleListResponse(us user.Store, userID uint, articles []model.Article, count int64) *articleListResponse {
 	r := new(articleListResponse)
 	r.Articles = make([]*articleResponse, 0)
 	for _, a := range articles {

@@ -3,27 +3,28 @@ package model
 
 import (
 	"errors"
+
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	Username   string `gorm:"unique_index;not nul"`
-	Email      string `gorm:"unique_index;not null"`
+	Username   string `gorm:"uniqueIndex;not nul"`
+	Email      string `gorm:"uniqueIndex;not null"`
 	Password   string `gorm:"not null"`
 	Bio        *string
 	Image      *string
-	Followers  []Follow  `gorm:"foreignkey:FollowingID"`
-	Followings []Follow  `gorm:"foreignkey:FollowerID"`
+	Followers  []Follow  `gorm:"foreignKey:FollowingID"`
+	Followings []Follow  `gorm:"foreignKey:FollowerID"`
 	Favorites  []Article `gorm:"many2many:favorites;"`
 }
 
 type Follow struct {
 	Follower    User
-	FollowerID  uint `gorm:"primary_key" sql:"type:int not null"`
+	FollowerID  uint `gorm:"primaryKey" sql:"type:int not null"`
 	Following   User
-	FollowingID uint `gorm:"primary_key" sql:"type:int not null"`
+	FollowingID uint `gorm:"primaryKey" sql:"type:int not null"`
 }
 
 func (u *User) HashPassword(plain string) (string, error) {
