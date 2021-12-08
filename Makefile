@@ -48,7 +48,7 @@ run: ## Run project
 	go run -race .
 
 run-container: ## Run container аfter build-container. Required https://www.docker.com  
-	chmod o+w ./database && docker run -p 8585:8585 -v "$(pwd)"/database:/myapp/database  fiber-rw:latest
+	chmod o+w ./database && docker run -p 8585:8585 -v $(PWD)/database:/myapp/database  fiber-rw:latest
 
 
 
