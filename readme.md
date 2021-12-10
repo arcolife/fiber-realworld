@@ -17,6 +17,13 @@ For more information on how to this works with other frontends/backends, head ov
 
 Before quick start you must install [docker](https://www.docker.com), [docker-compose](https://docs.docker.com/compose/)  and [Git](https://git-scm.com/).
 
+**Starts ready docker container**
+
+```bash
+mkdir database && chmod o+w ./database && docker run -d -p 8585:8585 -v $(pwd)/database:/myapp/database alpody/golang-fiber-real-world 
+```
+
+**Builds and tests**
 
 ```bash
 git clone https://github.com/alpody/golang-fiber-realworld-example-app.git
