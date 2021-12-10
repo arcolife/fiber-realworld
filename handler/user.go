@@ -112,7 +112,7 @@ func (h *Handler) CurrentUser(c *fiber.Ctx) error {
 // @Failure 404 {object} utils.Error
 // @Failure 500 {object} utils.Error
 // @Security ApiKeyAuth
-// @Router /user [get]
+// @Router /user [put]
 func (h *Handler) UpdateUser(c *fiber.Ctx) error {
 	u, err := h.userStore.GetByID(userIDFromToken(c))
 	if err != nil {
