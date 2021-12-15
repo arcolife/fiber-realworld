@@ -33,8 +33,8 @@ clear-db: ## Remove old database
 	rm -f ./database/realworld.db
 
 docs:
-	  go get -u github.com/swaggo/swag/cmd/swag
-		go generate .
+	go get -u github.com/swaggo/swag/cmd/swag
+	go generate .
 
 generate: ## Generate swagger docs. Required https://github.com/arsmn/fiber-swagger 
 	go generate .	
