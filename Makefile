@@ -32,6 +32,10 @@ download: ## Download go dependency
 clear-db: ## Remove old database
 	rm -f ./database/realworld.db
 
+docs:
+	  go get -u github.com/swaggo/swag/cmd/swag
+		go generate .
+
 generate: ## Generate swagger docs. Required https://github.com/arsmn/fiber-swagger 
 	go generate .	
 
@@ -44,7 +48,7 @@ build-static: ## Build project as single static linked executable file
 build-image: ## Build docker image. Required https://www.docker.com  
 	docker build -t fiber-rw .
 
-run: ## Run project 
+run: docs ## Run project 
 	go run -race .
 
 run-container: ## Run container аfter build-container. Required https://www.docker.com  
