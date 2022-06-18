@@ -1,4 +1,4 @@
-FROM golang:1.17-alpine3.14 AS builder
+FROM golang:1.18.2-alpine3.16 AS builder
 
 RUN apk add --update gcc musl-dev
 RUN mkdir -p /myapp
@@ -7,7 +7,7 @@ WORKDIR /myapp
 
 RUN adduser -u 10001 -D myapp
 
-RUN go get -u github.com/swaggo/swag/cmd/swag  &&  go generate . && GOOS=linux GOARCH=amd64 CGO_ENABLED=1  go build -ldflags='-extldflags=-static'  -o myapp .
+RUN go install github.com/swaggo/swag/cmd/swag@v1.8.3 &&  go generate . && GOOS=linux GOARCH=amd64 CGO_ENABLED=1  go build -ldflags='-extldflags=-static'  -o myapp .
 
 #RUN make build-static 
 RUN chown myapp: ./database

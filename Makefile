@@ -1,7 +1,7 @@
 #for newmand command HOST must be non-localhost 
 
-HOST=localhost
-#HOST=192.168.56.103
+#HOST=localhost
+HOST=192.168.0.118
 PORT=8585
 CONTAINER_PORT=8585
 #export APIURL=http://192.168.56.103:8585/api
@@ -33,7 +33,7 @@ clear-db: ## Remove old database
 	rm -f ./database/realworld.db
 
 docs:
-	go get -u github.com/swaggo/swag/cmd/swag
+	go install github.com/swaggo/swag/cmd/swag@latest
 	go generate .
 
 generate: ## Generate swagger docs. Required https://github.com/arsmn/fiber-swagger 
